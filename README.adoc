@@ -1,0 +1,63 @@
+= SonarQube Docker Compose
+
+This https://docs.docker.com/compose/[Docker Compose] file allows for running a local SonarQube server backed by a Postgres database, both running in Docker containers.
+
+== Usage
+
+=== Start
+
+Start the server and the database in detached (background) mode by executing the following from within the directory of the `docker-compose.yml`:
+
+[source,bash]
+----
+$ docker-compose up -d
+----
+
+The server will become available on http://localhost:9000.
+
+=== Analyze source code
+
+Add the https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Maven[SonarQube Scanner for Maven] to your `pom.xml`:
+
+[source, xml]
+----
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>sonar-maven-plugin</artifactId>
+      <version>2.7.1</version>
+    </plugin>
+  </plugins>
+</build>
+----
+
+You don't need to configure anything else.
+The project is ready for analysis:
+
+[source,bash]
+----
+$ mvn sonar:sonar
+----
+
+You can then go to the SonarQube web interface to view the results.
+
+Username and password for the default user is both `admin`.
+
+=== Stop
+
+You can stop the SonarQube server running this command in the directory of the Docker Compose file:
+
+[source,bash]
+----
+$ docker-compose stop
+----
+
+This will stop the server without deleting the containers, so that no data is lost.
+
+If you want to remove everything, run:
+
+[source,bash]
+----
+$ docker-compose down
+----

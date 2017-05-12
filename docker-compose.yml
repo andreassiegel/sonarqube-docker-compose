@@ -1,0 +1,29 @@
+---
+version: '2'
+
+services:
+  sonar-server:
+    image: sonarqube:6.3.1-alpine
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    environment:
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://sonar-db:5432/sonar
+    networks:
+      - sonar
+    depends_on:
+      - sonar-db
+
+  sonar-db:
+    image: postgres:9.2.20-alpine
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    networks:
+      - sonar
+
+  network:
+    sonar:
+      driver: bridge
