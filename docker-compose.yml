@@ -24,6 +24,6 @@ services:
     networks:
       - sonar
 
-  network:
-    sonar:
-      driver: bridge
+networks:
+  sonar:
+    driver: bridge
